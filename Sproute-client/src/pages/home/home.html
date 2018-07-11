@@ -1,17 +1,63 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
-</ion-header>
 
-<ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+<ion-content class="bg" padding>
+
+    <ion-title>
+      Add Plant
+    </ion-title>
+    	<button ion-button  color="danger" (click)="logout()">Logout</button>
+ 
+
+  <ion-list>
+    <ion-item>
+      <ion-label color="primary" floating>Name</ion-label>
+      <ion-input type="text" #pushName></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" floating>SpeciesName</ion-label>
+      <ion-input type="text" #pushSpeciesname></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" floating>Notes</ion-label>
+      <ion-input type="number" #pushNotes></ion-input>
+    </ion-item>
+    <button ion-button color="secondary" (click)="pushPlantToList(pushName.value, pushSpeciesname.value, pushNotes.value)">Create Plant</button>
+  </ion-list>
+
+
+  <!-- <ul>
+    <li *ngFor="let plant of plants | async">
+      <h3>{{ plant.name }}</h3>
+      <p>Key: {{plant.key}}</p>
+      <p>Speciesname: {{ plant.speciesname }}</p>
+      <p>Notes: {{ plant.notes }}</p>
+      <button ion-button color="primary" (click)="toggleEditPlantForm(plant.key)">editar</button>
+      <button ion-button color="danger" (click)="removePlant(plant.key)">Remover</button>
+    </li>
+  </ul> -->
+
+  <ion-card *ngFor="let plant of plants | async">
+    <!-- <img src="https://static.quizur.com/i/b/5a1597a22ee3f2.578549895a1597a219ce36.82350183.png"/> -->
+    <ion-card-content>
+      <ion-card-title>Name: {{ plant.name }}</ion-card-title>
+      <h3>Speciesname: {{ plant.speciesname }}</h3>
+     <!-- <p>Key: {{plant.key}} </p>-->
+      <p>Notes: {{ plant.note }} </p>
+      <button ion-button color="primary" (click)="toggleEditPlantForm(plant.key)">edit</button>
+      <button ion-button color="danger" (click)="removePlant(plant.key)">Remove</button>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="edit-form" *ngIf="isEditVisible">
+    <form [formGroup]="editPlantForm" >
+      <input type="text" placeholder="Edit Name" formControlName="name" #pushName>
+      <input type="text" placeholder="Edit Species" formControlName="speciesname" #pushSpeciesName>
+      <input type="text" placeholder="Edit Notes" formControlName="note" #pushNote>
+      <button (click)="updatePlant(plantKey, pushName.value, pushSpeciesName.value, pushNote.value)">Update</button>
+      <div (click)="toggleEditPlantForm()">Remove Plant</div>
+    </form>
+  </div>
+<!--  updatePlant(plantKey: string, name: string, speciesname: string, note: string) {-->
+
+  <button ion-button color="danger" (click)="removeAll()">remove all plants and start fresh</button>
+
 </ion-content>

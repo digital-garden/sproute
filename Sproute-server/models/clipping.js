@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 
 var ClippingSchema = new Schema(
     {
+    species: { type: Schema.ObjectId, ref: 'Species', required: true },
     first_name: {type: String, required: true, max: 100},
     family_name: {type: String, required: true, max: 100},
     date_of_birth: { type: Date },

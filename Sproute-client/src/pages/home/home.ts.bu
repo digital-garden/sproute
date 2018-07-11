@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, FormControlName, Validators } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
-import { MongoService } from "../../services/mongo.service";
 
+import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 // AngularFireList, AngularFireObject 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -15,24 +15,15 @@ import 'rxjs/add/operator/map';
 
 export class HomePage {
 
-name: any;
-soil: any;
-water: any;
-sun: any;
-species: any;
-notes: any;
+  plantsRef: AngularFireList<any>;
+  plants: Observable<any[]>;
+  editPlantForm: FormGroup;
+  isEditVisible = false;
+  plantKey;
 
 
+  constructor(public navCtrl: NavController, public db: AngularFireDatabase, private fb: FormBuilder,private auth: AuthService) {
 
-  constructor(public navCtrl: NavController, public db: MongoService, private fb: FormBuilder,private auth: AuthService) {
-    
-    this.name = this.navParams.get('plant.name')
-    this.soil = this.navParams.get('plant.soilType')
-    this.sun = this.navParams.get('plant.sunType')
-    this.water = this.navParams.get('plant.waterType')
-    this.species = this.navParams.get('plant.species')
-    this.notes = this.navParams.get('plant.notes')
-    
     this.plantsRef = this.db.list('/plants');
     this.plants = this.plantsRef.snapshotChanges().map(changes => {
       console.log(changes);
